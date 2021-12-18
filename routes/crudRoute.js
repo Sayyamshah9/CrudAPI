@@ -15,9 +15,9 @@ router.post('/:id', async(req,res) =>{
     })
     try{
         const savecruddata = await cruddata.save()
-        res.json(savecruddata)
+        res.json({msg:"Task Added"})
     }catch(err){
-        res.json({message:err})
+        res.json({msg:err})
     }
 })
 
@@ -28,7 +28,7 @@ router.get('/:id', async (req, res) => {
         const getallcruddata = await crudschema.find({userid: req.params.id})
         res.json(getallcruddata)
     }catch(err){
-        res.json({message:err})
+        res.json({msg:err})
     }
 })
 
@@ -36,20 +36,20 @@ router.get('/:id', async (req, res) => {
 router.delete('/:id', async(req,res)=>{
     try{
         const deletecruddata = await crudschema.findByIdAndDelete(req.params.id)
-        res.json({deletestatus: 'CRUD-data Removed' })
+        res.json({msg: "Task Deleted" })
         // console.log('CRUD-data Removed')
     }catch(err){
-        res.json({message: err})
+        res.json({msg: err})
     }
 })
 
 //UPDATE CRUD-DATA
 router.patch('/:id', async(req,res) => {
     
-    idtoupdate = req.params.id
+    userid = req.params.id
 
     crudschema.findByIdAndUpdate(
-        idtoupdate,
+        userid,
         {
             title: req.body.title,
             subtitle: req.body.subtitle,
@@ -58,9 +58,9 @@ router.patch('/:id', async(req,res) => {
         },
         (err) => {
             if(err){
-                res.json({updatestatus:err})
+                res.json({msg:err})
             }else{
-                res.json({updatestatus:'successful'})
+                res.json({msg:"Updated Successfully"})
             }
         }        
     )
