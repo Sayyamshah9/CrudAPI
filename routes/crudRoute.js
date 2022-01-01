@@ -1,21 +1,22 @@
-const express = require('express')
-const router = express.Router()
+const router = require('express').Router()
 
 const crudschema = require('../models/crudSchema')
 
 // POST REQUEST
 router.post('/:id', async(req,res) =>{
 
+    // let ddate = "2021" + "-" + req.body.duedate
+
     const cruddata = new crudschema({
         userid:req.params.id,
         title: req.body.title,
         subtitle: req.body.subtitle,
         description: req.body.description,
-        duedate: req.body.duedate
+        duedate: new Date(req.body.duedate).toDateString()
     })
     try{
         const savecruddata = await cruddata.save()
-        res.json({msg:"Task Added"})
+        res.json({msg:"New Task Created"})
     }catch(err){
         res.json({msg:err})
     }
@@ -45,11 +46,9 @@ router.delete('/:id', async(req,res)=>{
 
 //UPDATE CRUD-DATA
 router.patch('/:id', async(req,res) => {
-    
-    userid = req.params.id
 
     crudschema.findByIdAndUpdate(
-        userid,
+        req.params.id,
         {
             title: req.body.title,
             subtitle: req.body.subtitle,

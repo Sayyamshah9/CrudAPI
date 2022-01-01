@@ -12,7 +12,7 @@ router.post('/register', async(req,res) => {
     //Validations
     const {error} = validReg(req.body)
     if(error) return res.json({msg:error.details[0].message})
-
+    
     //check if user already exist
     const userexist = await userschema.findOne({emailid: req.body.emailid})
     if(userexist) return res.json({msg: "User already Exist Login to Continue"})
@@ -32,19 +32,15 @@ router.post('/register', async(req,res) => {
     )
     try{
         const saveuserdata = await user.save()
-        // res.json({ "id":  saveuserdata._id}) 
-        // res.json(saveuserdata)
-        res.json({msg:"User Created"})
+        // res.json({msg:"User Created"})
+        res.json(
+            {msg:"Logged In",
+        _id:saveuserdata._id}
+        )
     }catch(err){
-        res.json({message: err}) 
+        res.json({msg:err}) 
     }
 
-})
-
-//for login trial 
-router.get('/getlogin/:email', async(req,res) => {
-    const user = await userschema.findOne({emailid:req.params.email})
-    res.json(user)
 })
 
 //for login
@@ -62,7 +58,10 @@ router.post('/login', async(req,res) => {
     const passwordExist = await bcrypt.compare(req.body.password, emailExist.password)
     if(!passwordExist) return res.json({msg:"Invalid Password"})
 
-    res.json({msg:"Logged In"})
+    res.json(
+        {msg:"Logged In",
+        _id:emailExist._id}
+        )
 })
 
 //GET REQUEST
@@ -97,9 +96,7 @@ router.get('/', async (req, res) => {
 router.delete('/:id', async (req,res) =>{
     try{
         const deleteuser = await userschema.findByIdAndDelete(req.params.id)
-        // res.send('User Deleted')
         res.json({msg:"User Deleted"})
-        // console.log('User Deleted')
     }catch(err){
         res.json({msg:err})
     }
