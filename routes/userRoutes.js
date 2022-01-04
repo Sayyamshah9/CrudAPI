@@ -60,7 +60,8 @@ router.post('/login', async(req,res) => {
 
     res.json(
         {msg:"Logged In",
-        _id:emailExist._id}
+        _id:emailExist._id,
+        username: emailExist.username}
         )
 })
 
