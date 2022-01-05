@@ -2,7 +2,7 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
-require('dotenv').config({})
+require('dotenv').config()
 const userRouter = require('./routes/userRoutes.js')
 const crudRouter = require('./routes/crudRoute.js')
 
