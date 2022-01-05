@@ -2,7 +2,7 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
-require('dotenv').config()
+require('dotenv').config({})
 const userRouter = require('./routes/userRoutes.js')
 const crudRouter = require('./routes/crudRoute.js')
 
@@ -19,7 +19,7 @@ app.get('/', (req,res) => {
 
 //CONNECTION TO DATABASE
 try{
-    mongoose.connect("mongodb+srv://crudUser1:crudUser1@sayyam.1shvm.mongodb.net/crudApp",
+    mongoose.connect(process.env.DB_CONNECTION,
                     {useNewUrlParser: true},
                     console.log('DB Connected')
                 )
