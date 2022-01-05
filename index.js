@@ -21,7 +21,7 @@ app.get('/', (req,res) => {
 
 //CONNECTION TO DATABASE
 try{
-    mongoose.connect(process.env.DB_CONNECTION,
+    mongoose.connect("mongodb+srv://crudUser1:crudUser1@sayyam.1shvm.mongodb.net/crudApp",
                     {useNewUrlParser: true},
                     console.log('DB Connected')
                 )
