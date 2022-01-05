@@ -2,7 +2,9 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
-require('dotenv/config')
+require('dotenv').config({
+    path:'./.env'
+})
 const userRouter = require('./routes/userRoutes.js')
 const crudRouter = require('./routes/crudRoute.js')
 
@@ -21,10 +23,12 @@ app.get('/', (req,res) => {
 try{
     mongoose.connect(process.env.DB_CONNECTION,
                     {useNewUrlParser: true},
-                    console.log('Connected')
+                    console.log('DB Connected')
                 )
 }catch(err){
     console.log(err)
 }
 
-app.listen(port)
+app.listen(port, ()=>{
+    console.log("Server is Up and Running");
+})
