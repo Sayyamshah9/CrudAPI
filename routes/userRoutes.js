@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const {validReg, validLogin} = require('../validation.js')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const authToken = require('../jwtauthentication')
 
 const userschema = require('../models/userSchema')
 
@@ -58,16 +60,20 @@ router.post('/login', async(req,res) => {
     const passwordExist = await bcrypt.compare(req.body.password, emailExist.password)
     if(!passwordExist) return res.json({msg:"Invalid Password"})
 
+    const newToken = jwt.sign({_id:emailExist._id}, process.env.TOKEN_KEY)
+    res.header('auth_token', newToken)
+
     res.json(
         {msg:"Logged In",
         _id:emailExist._id,
-        username: emailExist.username}
+        username: emailExist.username,
+        auth_token: newToken}
         )
 })
 
 //GET REQUEST
 //get specific user
-router.get('/:email', async (req, res) => {
+router.get('/:email',  async (req, res) => {
 
     try{
         const single_user = await userschema.find({emailid: req.params.email})
@@ -83,7 +89,7 @@ router.get('/:email', async (req, res) => {
 })
 
 //GET ALL POSTS
-router.get('/', async (req, res) => {
+router.get('/', authToken, async (req, res) => {
 
     try{
         const allusers = await userschema.find()

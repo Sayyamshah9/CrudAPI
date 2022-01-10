@@ -1,6 +1,7 @@
 const router = require('express').Router()
 
 const crudschema = require('../models/crudSchema')
+const authToken = require('../jwtauthentication')
 
 // POST REQUEST
 router.post('/:id', async(req,res) =>{
@@ -24,7 +25,7 @@ router.post('/:id', async(req,res) =>{
 
 //GET CRUD-DATA
 //get all crud-data of same userid
-router.get('/:id', async (req, res) => {
+router.get('/:id', authToken, async (req, res) => {
     try{
         const getallcruddata = await crudschema.find({userid: req.params.id})
         res.json(getallcruddata)

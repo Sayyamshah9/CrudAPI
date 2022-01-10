@@ -1,4 +1,7 @@
+const express = require('express')
+express()
 const Joi = require('joi')
+const jwt = require('jsonwebtoken')
 
 const validReg = register => {
 
